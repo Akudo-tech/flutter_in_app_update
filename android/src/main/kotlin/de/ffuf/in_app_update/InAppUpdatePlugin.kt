@@ -160,12 +160,16 @@ class InAppUpdatePlugin : FlutterPlugin, MethodCallHandler,
     private fun performImmediateUpdate(result: Result) = checkAppState(result) {
         appUpdateType = AppUpdateType.IMMEDIATE
         updateResult = result
-        appUpdateManager?.startUpdateFlowForResult(
-          appUpdateInfo,
-          AppUpdateType.IMMEDIATE,
-          activityProvider?.activity(),
-          REQUEST_CODE_START_UPDATE
-        )
+        appUpdateInfo?.let {
+            activityProvider?.activity()?.let { it1 ->
+                appUpdateManager?.startUpdateFlowForResult(
+                        it,
+                        AppUpdateType.IMMEDIATE,
+                        it1,
+                        REQUEST_CODE_START_UPDATE
+            )
+            }
+        }
     }
 
     private fun checkAppState(result: Result, block: () -> Unit) {
@@ -184,12 +188,16 @@ class InAppUpdatePlugin : FlutterPlugin, MethodCallHandler,
     private fun startFlexibleUpdate(result: Result) = checkAppState(result) {
         appUpdateType = AppUpdateType.FLEXIBLE
         updateResult = result
-        appUpdateManager?.startUpdateFlowForResult(
-          appUpdateInfo,
-          AppUpdateType.FLEXIBLE,
-          activityProvider?.activity(),
-          REQUEST_CODE_START_UPDATE
-        )
+        appUpdateInfo?.let {
+            activityProvider?.activity()?.let { it1 ->
+                appUpdateManager?.startUpdateFlowForResult(
+                        it,
+                        AppUpdateType.FLEXIBLE,
+                        it1,
+                        REQUEST_CODE_START_UPDATE
+            )
+            }
+        }
         appUpdateManager?.registerListener { state ->
             if (state.installStatus() == InstallStatus.DOWNLOADED) {
                 updateResult?.success(null)
@@ -217,7 +225,7 @@ class InAppUpdatePlugin : FlutterPlugin, MethodCallHandler,
         activityProvider?.addActivityResultListener(this)
         activityProvider?.activity()?.application?.registerActivityLifecycleCallbacks(this)
 
-        appUpdateManager = AppUpdateManagerFactory.create(activityProvider?.activity())
+        appUpdateManager = activityProvider?.activity()?.let { AppUpdateManagerFactory.create(it) }
 
         // Returns an intent object that you use to check for an update.
         val appUpdateInfoTask = appUpdateManager!!.appUpdateInfo

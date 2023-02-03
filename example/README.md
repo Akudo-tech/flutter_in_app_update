@@ -1,50 +1,16 @@
-# in_app_update_example
+# example
 
-Demonstrates how to use the in_app_update plugin.
+A new Flutter project.
 
-```dart
-  RaisedButton(
-    child: Text('Check for Update'),
-    onPressed: () {
-      InAppUpdate.checkForUpdate().then((state) {
-            setState(() {
-              _updateState = state;
-            });
-          }).catchError((e) => _showError(e));
-    },
-  ),
-  RaisedButton(
-    child: Text('Perform immediate update'),
-    onPressed: _updateInfo?.updateAvailability ==
-            UpdateAvailability.updateAvailable
-        ? () {
-            InAppUpdate.performImmediateUpdate()
-                .catchError((e) => _showError(e));
-          }
-        : null,
-  ),
-  RaisedButton(
-    child: Text('Start flexible update'),
-    onPressed: _updateInfo?.updateAvailability ==
-            UpdateAvailability.updateAvailable
-        ? () {
-            InAppUpdate.startFlexibleUpdate().then((_) {
-              setState(() {
-                _flexibleUpdateAvailable = true;
-              });
-            }).catchError((e) => _showError(e));
-          }
-        : null,
-  ),
-  RaisedButton(
-    child: Text('Complete flexible update'),
-    onPressed: !_flexibleUpdateAvailable
-        ? null
-        : () {
-            InAppUpdate.completeFlexibleUpdate().then((_) {
-              _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('Success!')));
-            }).catchError((e) => _showError(e));
-            ;
-          },
-  )
-```
+## Getting Started
+
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
